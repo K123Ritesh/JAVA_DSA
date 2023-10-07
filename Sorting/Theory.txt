@@ -1,0 +1,20 @@
+**Sorting in java
+    A.Arrays.sort()
+       (i)Arrays of primitives(int,char.....)
+       (ii)Array of Objects(String ,Integer,Student....)
+    B.Collections.sort()
+       (i)For lists(ArrayList,LinkedLists...)
+**Stability in Sorting Algorithm
+   arr[]={("Anil",50),("Ayan",80),("Piyush",50),("Ramesh",50)}
+        Stable-->
+        {("Anil",50),("Piyush",50),("Ayan",80),("Ramesh",50)}
+        Unstable
+        {("Piyush",50),("Anil",50),("Ayan",80),("Ramesh",50)}
+      
+      Example Stable Sort --> Bubble sort
+                              Insertion sort
+                              Merge Sort
+      Example Unstable Sort --> Selection sort
+                                Quick sort
+                                Heap Sort
+

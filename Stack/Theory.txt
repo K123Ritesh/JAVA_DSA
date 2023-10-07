@@ -1,0 +1,22 @@
+Stack Operations:-
+ isEmpty() : Return true if Stack is isEmpty
+ push(x) : Insert an item to the top of the Stack
+ pop() : Removes an item from the top
+ peek() : Returns the top item
+ size() : Returns the size of the Stack
+
+** Insertion and Deletion from the same side
+** LIFO :- Last in First Out
+
+Underflow :- when pop() and peek() called on empty Stack
+Overflow :- when push called on a full Stack
+
+# Applications of Stack:-
+  1. Function Calls
+  2. Balanced Parenthesis (Last Opened Bracket should close first)
+  3. Reversing Items
+  4. Infix to postfix/prefix
+  5. Evaluation of postfix/prefix
+  6. Stock Span Problem
+  7. Undo/Redo or Forward/Backward
+  

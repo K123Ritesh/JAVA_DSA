@@ -1,0 +1,228 @@
+Search ___|
+Insert    | ----> O(1)
+Delete ___|
+
+Not Usefull for:-
+        * Finding Closest Value --->AVL or Red Black Tree
+        * Sorted Data --->AVL or Red Black Tree          
+        * Prefix Searching ---> Trie
+
+Applications of Hashing:-
+    1.Dictionaries
+    2.Database Indexing
+    3.Cryptography 
+    4.Caches
+    5.Symbol tables in Compilers/Intrepreters
+    6.Routers
+    7.Getting data from Database and many more.....
+
+Direct Address Table:-
+   Imagine a situation where you have 1000 keys with values from (0 to 999),
+   how would you implement following in O(1) time
+     1.Search
+     2.Insert
+     3.Delete
+   By Creating a array of length 1000 ....
+      * To Delete(int key) --> table[key]=0
+      * To insert(int key) --> table[key]=1
+      * To Search(int key) --> table[key]==1 ? return true : return false
+
+How Hash Functions work ?
+    * Should always map a large key to a small key
+    * Should generate values from 0 to m-1
+    * should be fast , O(1) for integers and O(len) for String of length len
+    * Should uniformly distribute large keys into hash slots
+
+    ## Example Hash Functions
+       1. h(large_key)=large_key % m
+       2. for Strings,Weighted sum,
+             str[]="abcd"
+             str[0]*x^0 + str[1]*x^1 + str[2]*x^2 + str[3]*x^3 
+       3. Universal Hashing
+
+Collision Handling:-
+   If we know keys in advance then we can Perfect Hashing.
+   If we don't know keys,then we use one of the following :-
+                                         1. Chaining
+                                         2. Open Addressing
+                                                        A. Linear Probing
+                                                        B. Quadratic Probing
+                                                        C. Double Hashing
+
+Chaining:-
+    hash(key) = key % 7
+    keys={50,21,58,17,15,49,56,22,,23,25}
+    
+    Hash-Table (Array(size=7) of LinkedList Headers)
+    0 | 21 --> 49 --> 56
+    1 | 50 --> 15 --> 22
+    2 | 58 --> 23
+    3 | 3
+    4 | 25
+    5 |
+    6 |
+
+    Performance:-
+       m = No. of slots in Hash-Table
+       n = No. of keys to be inserted
+       load-factor(alpha) = n/m
+
+       Expected chain length = alpha
+       Expected time to search = O(1+alpha)
+       Expected time to search/delete = O(1+alpha)
+
+    Data Structures for Storing Chains:-
+       * LinkedList --> Search/Insert/Delete --> O(l)
+       * Dynamic Sized Array(ArrayList in java)
+       * Self Balancing BST(AVL or Red Black Tree) -->Insert/Search/Delete --> O(log(l))   
+    
+    Implementation of Chaining:-
+    Code:- 
+         class MyHash{
+            static int BUCKET;
+            static ArrayList<LinkedList<Integer>>table;
+            MyHash(int b){
+                BUCKET=b;
+                table=new ArrayList<LinkedList<Integer>>();
+                for(int i=0;i<b;i++){
+                    table.add(new LinkedList<Integer>());
+                }
+            }
+            public static void insert(int key){
+                int i=key % BUCKET;
+                table.get(i).add(key);
+            }
+            public static void remove(int key){
+                int i=key % BUCKET;
+                table.get(i).remove((Integer)key);
+            }
+            public static boolean search(int key){
+                int i=key % BUCKET;
+                return table.get(i).contains(key);
+            }
+         }
+
+Open Addressing:-
+  * No. of slots >= No. of keys to be inserted
+  * Cache Friendly
+  hash(key)=key % 7
+  Linear Probing:-Linearly Search (In Circular manner) for next empty slot,
+                  when there is a Collision.
+  How to Handle deletions in Open Addressing ?
+    * Search:-
+             We compute hash function we go to that index and compare,if 
+             we find we return true,otherwise we linearly search.We stop iterating 
+             when one of the three cases arise- 
+                                               A.Empty slot
+                                               B.Key Found
+                                               C.Traversed through the whole table
+    * Problem with simply making the slot empty when we delete!!
+            It will create a big problem for Searching a element which has also
+            same index as of this but we didn't put it here due to this element 
+            so DON'T make the slot empty mark as DELETED
+
+  Clustering(A problem with linear Probing):-
+     Linear Probing ==> Primary Clusters ==> hash(key,i)=(h(key)+i) % 7
+      
+     How to handle clustering problem with linear probing ?
+        1. Quadratic Probing ==> Secondary Clusters
+             hash(key,i)=(h(key)+i^2) % make
+             condition for working of quadratic probing :- A. alpha(n/m) < 0.5
+                                                           B. m ==> Prime    
+        2. Double Hashing 
+             hash(key,i)=(h1(key)+i*h2(key)) % m
+  
+  Double Hashing:-
+        hash(key,i)=(h1(key)+i*h2(key)) % m
+      * If h2(key) is relatively prime to m,then it always find a free slot 
+        if there is one.
+      * Distribute keys more uniformlythan linear and Quadratic probing.
+      * No Clustering
+      Code:-
+         void doubleHashingInsert(int key){
+            if(table is FULL){
+                return ERROR;
+            }
+            probe=h1(key),offset=h2(key);
+            // If offset is 1 same will work for Linear Probing
+            while(table[probe] is occupied){
+                probe=(probe+offset) % m;
+            } 
+            table[probe]=key;
+         }
+      Performance Analysis of Search(Unsuccessfull):-
+         alpha = n/m (Should be <=1)
+         Assumption:- Every Probe sequence tooks at a random location
+         (1-alpha) fraction of the table is empty
+         Expected no. of probes required = 1 / (1-alpha)
+  
+  Implementation of Open Addressing
+    Code:- 
+        Class MyHash{
+            int arr[];
+            int cap,size;
+            MyHash(int c){
+                cap=c;
+                size=0;
+                for(int i=0;i<cap;i++){
+                    arr[i]=-1;
+                }
+            }
+            int hash(int key){
+                return key % cap;
+            } 
+            //Search
+            boolean Search(int key){
+                int h=hash(key);
+                int i=h;
+                while(arr[i]!=-1){
+                    if(arr[i]==key){
+                        return true;
+                    }
+                    i=(i+1) % cap;
+                    if(i==h){
+                        return false;
+                    }
+                }
+                return false;
+            }
+            //Insert
+            boolean Insert(int key){
+                if(size==cap){
+                    return false;
+                }
+                int i=hash(key);
+                while(arr[i]!=-1 && arr[i]!=-2 && arr[i]!=key){
+                    i=(i+1) % cap;
+                }
+                if(arr[i]==key){
+                    return false;
+                }else{
+                    arr[i]=key;
+                    size++;
+                    return true;
+                }
+            }
+            //Erase
+            boolean Erase(int key){
+                int h=hash(key);
+                int i=h;
+                int h=hash(key);
+                int i=h;
+                while(arr[i]!=-1){
+                    if(arr[i]==key){
+                        arr[i]=-2;
+                        return true;
+                    }
+                    i=(i+1) % cap;
+                    if(i==h){
+                        return false;
+                    }
+                }
+                return false;
+            }
+        }
+  
+  HashSet in Java ==> Go to Code
+  HashMap in java ==> Go to Code
+

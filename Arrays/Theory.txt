@@ -1,0 +1,12 @@
+Arrays:-
+     1.Fixed Size
+     2.Dynamic Size(ArrayList)
+Operations:-
+     1.Insert O(n)
+     2.Search O(logn) (For Sorted Array using Binary Search)
+              O(n) (For Unsorted Array using Linear Search)
+     3.Access ith Element O(1) and Modify ith Element O(1)
+     4.Insert and delete at the end O(1)
+Advantages of Array
+     1.Random Access
+     2.Cache Friendliness
