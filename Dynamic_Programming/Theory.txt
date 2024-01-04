@@ -1,0 +1,11 @@
+In Simple Words , it is an optimisation over plain recursion .
+The idea is to reuse the slution of subproblem when there are overlappping subproblem.
+1. Memoization(Top Down)
+2. Tabulation(Bottom up)
+
+Applications
+1. Bellman ford Algorithm
+2. Floyd warshall Algorithm
+3. Diff utility(LCS)
+4. Search Close Words(Edit Distance)
+5. Resource Allocation(0 - 1 Knapsack)
