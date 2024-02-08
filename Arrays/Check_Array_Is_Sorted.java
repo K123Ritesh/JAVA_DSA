@@ -2,7 +2,7 @@ package Arrays;
 
 public class Check_Array_Is_Sorted {
 
-     //Non-Decreasing sorted order is sorted....
+     //Non-Decreasing sorted order is sorted...
 
      //Naive Approach
      // Time:-O(n^2)
